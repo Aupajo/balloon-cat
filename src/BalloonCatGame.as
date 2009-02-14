@@ -6,9 +6,10 @@ package {
   
   [SWF(width='600', height='400')]
   public class BalloonCatGame extends Sprite {
-    private var gravity:Vector;
+    private var lift:Vector;
     private var wind:Vector;
-    private var collidable:Group;
+    private var balloons:Group;
+    private var boundaries:Group;
     
     public function BalloonCatGame() {
       
@@ -21,16 +22,21 @@ package {
       addEventListener(Event.ADDED_TO_STAGE, populate);
       
       // Forces
-      gravity = new Vector(0, -1);
-      wind = new Vector(0.05, 0);
+      lift = new Vector(0, -1);
+      wind = new Vector(0, 0);
       
-      APEngine.addForce(gravity);
+      APEngine.addForce(lift);
       APEngine.addForce(wind);
       
       // Groups
-      collidable = new Group();
-      collidable.collideInternal = true;
-      APEngine.addGroup(collidable);
+      balloons = new Group();
+      balloons.collideInternal = true;
+      boundaries = new Group();
+      
+      balloons.addCollidable(boundaries);
+      
+      APEngine.addGroup(balloons);
+      APEngine.addGroup(boundaries);
       
     }
     
@@ -40,17 +46,34 @@ package {
     }
     
     private function populate(event:Event):void {
-      var rect:RectangleParticle = new RectangleParticle(0, 0, stage.stageWidth, 20, 0, true);
-      collidable.addParticle(rect);
+      createBoundaries();
+      addBalloons(10);
+    }
+    
+    private function createBoundaries():void {
       
-      var minSize:Number = 5;
+      var top:RectangleParticle = new RectangleParticle(300, -10, 600, 20, 0, true);
+      var bottom:RectangleParticle = new RectangleParticle(300, 410, 600, 20, 0, true);
+      var left:RectangleParticle = new RectangleParticle(-10, 200, 20, 400, 0, true);
+      var right:RectangleParticle = new RectangleParticle(610, 200, 20, 400, 0, true);
+      
+      boundaries.addParticle(top);
+      boundaries.addParticle(bottom);
+      boundaries.addParticle(left);
+      boundaries.addParticle(right);
+    }
+    
+    private function addBalloons(numBalloons:uint):void {
+      
+      var minSize:Number = 10;
       var maxSize:Number = 20;
       
-      for(var i:uint = 0; i < 20; i ++) {
+      for(var i:uint = 0; i < numBalloons; i ++) {
         var radius:Number = Math.random() * (maxSize - minSize) + minSize;
-        var balloon:CircleParticle = new CircleParticle(Math.random() * 800, 300, radius, false, maxSize / radius);
-        collidable.addParticle(balloon);
+        var balloon:CircleParticle = new CircleParticle(Math.random() * 500 + 50 - radius, 300, radius, false, maxSize / radius);
+        balloons.addParticle(balloon);
       }
+      
     }
     
   }
