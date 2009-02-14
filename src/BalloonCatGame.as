@@ -1,7 +1,7 @@
 package {
+  import particles.*;
   import flash.display.*;
   import flash.events.Event;
-  
   import org.cove.ape.*;
   
   [SWF(width='600', height='400', backgroundColor='#CCCCCC')]
@@ -12,9 +12,6 @@ package {
     private var wind:Vector;
     private var balloons:Group;
     private var boundaries:Group;
-    
-    [Embed(source='assets/library.swf', symbol='BalloonCat')]
-    private static var BalloonCat:Class;
     
     public function BalloonCatGame() {
       
@@ -52,7 +49,7 @@ package {
     
     private function populate(event:Event):void {
       createBoundaries();
-      addBalloons(30);
+      addBalloons(100);
     }
     
     private function createBoundaries():void {
@@ -71,13 +68,7 @@ package {
     private function addBalloons(numBalloons:uint, minSize:uint = 20, maxSize:uint = 40):void {
       for(var i:uint = 0; i < numBalloons; i ++) {
         var radius:Number = Math.random() * (maxSize - minSize) + minSize;
-        var balloon:CircleParticle = new CircleParticle(Math.random() * 500 + 50 - radius, 400, radius, false, maxSize / radius);
-        var graphic:Sprite = new BalloonCat();
-        var scale:Number = radius * 2 / graphic['body'].width;
-        graphic.width *= scale;
-        graphic.height *= scale;
-        graphic.scaleX *= Math.round(Math.random()) ? 1 : -1;
-        balloon.setDisplay(graphic);
+        var balloon:BalloonCat = new BalloonCat(Math.random() * 500 + 50 - radius, 400, radius, false, maxSize / radius);
         balloons.addParticle(balloon);
       }
       
