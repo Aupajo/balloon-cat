@@ -26,7 +26,15 @@ Learn more about Flex at http://flex.org
 <!--  END Browser History required section -->
 
 <style>
-body { margin: 0px; overflow:hidden }
+body { 
+	background-color: #333;
+	margin: 2em auto;
+	width: 620px;
+}
+
+#container {
+	border: 10px solid #000;
+}
 </style>
 <script language="JavaScript" type="text/javascript">
 <!--
@@ -44,6 +52,8 @@ var requiredRevision = ${version_revision};
 </head>
 
 <body scroll="no">
+
+<div id="container">
 <script language="JavaScript" type="text/javascript">
 <!--
 // Version check for the Flash Player that has the ability to start Player Product Install (6.0r65)
@@ -117,5 +127,6 @@ if ( hasProductInstall && !hasRequestedVersion ) {
 			</embed>
 	</object>
 </noscript>
+</div>
 </body>
 </html>
